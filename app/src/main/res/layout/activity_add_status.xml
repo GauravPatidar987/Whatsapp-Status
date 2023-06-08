@@ -1,0 +1,27 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+    <ImageView
+		android:layout_width="60dp"
+		android:layout_height="60dp"
+		android:id="@+id/add_statusImageView"
+		android:layout_alignParentLeft="true"
+		android:layout_margin="8dp"
+		android:onClick="addStatus"
+		android:scaleType="fitXY"
+		android:src="@drawable/ic_add_status"
+		/>
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="60dp"
+		android:gravity="center_vertical"
+		android:text="My Status"
+		android:textStyle="bold"
+		android:onClick="viewStatus"
+		android:layout_toRightOf="@id/add_statusImageView"
+		android:textSize="14sp"
+		android:layout_marginLeft="8dp"
+		android:textColor="#000000"
+		/>
+</RelativeLayout>

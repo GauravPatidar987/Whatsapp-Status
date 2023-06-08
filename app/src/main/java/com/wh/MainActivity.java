@@ -8,6 +8,7 @@ import android.net.*;
 import android.widget.*;
 import android.text.*;
 import android.graphics.*;
+import java.sql.*;
 
 public class MainActivity extends Activity 
 {
@@ -15,12 +16,14 @@ public class MainActivity extends Activity
 	Uri uri;
 	ProgressBar progress;
 	ImageView im;
-	Thread thread;
+	Thread thread,thread2;
 	boolean wai=false;
 	Context c;
 	int currentProgress=0;
 	int currentTime=6;
-	TextView textView;
+	
+	TextView textView,text_exp,ttxt_end,tc;
+	long s_time,e_time,r_time;
 	String s="Remaining Time";
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -34,14 +37,9 @@ public class MainActivity extends Activity
         c = this;
 
 		textView = findViewById(R.id.main_tv);
-        
-		
-	}
-
-	public void myStatus(View v)
-	{
-		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(intent, REQ_GALLERY);
+        text_exp=findViewById(R.id.main_tv_ex);
+		ttxt_end=findViewById(R.id.main_tv_exp);
+		tc=findViewById(R.id.main_tv_counter);
 	}
 
 	@Override
@@ -55,9 +53,12 @@ public class MainActivity extends Activity
 				uri = data.getData();
 				//Toast.makeText(this, uri.toString(), Toast.LENGTH_LONG).show();
 				im.setImageURI(uri);
+				s_time=System.currentTimeMillis();
+				e_time=s_time+1000*60*5;
+				r_time=s_time;
 				progress.setVisibility(View.VISIBLE);
 				final Handler mHandler=new Handler();
-
+				final Handler mHandler2=new Handler();
 				thread = new Thread(new Runnable(){
 
 						@Override
@@ -75,9 +76,6 @@ public class MainActivity extends Activity
 }
 										Thread.sleep(1000);
 
-
-
-
 									}
 									catch (InterruptedException e)
 									{
@@ -91,23 +89,58 @@ public class MainActivity extends Activity
 												anim.setDuration(1000);
 												progress.startAnimation(anim);
 												//progress.setProgress(currentProgress);
-												setGrText();
+												setGrText(textView,s+" "+currentTime);
+												setUI();
+											}
+										});
+									
+								}
+							}
+						}
+					});
+				thread.start();
+				thread2 = new Thread(new Runnable(){
+
+						@Override
+						public void run()
+						{
+							synchronized (this)
+							{
+								while (s_time!=e_time)
+								{
+									try
+									{
+										if (!wai){
+											r_time+=1000;
+										}
+										Thread.sleep(1000);
+
+									}
+									catch (InterruptedException e)
+									{
+
+									}
+									mHandler2.post(new Runnable() {
+											@Override
+											public void run()
+											{
+												tc.setVisibility(View.VISIBLE);
+												setGrText(tc,getRemainTime(r_time));
+
 											}
 										});
 								}
 							}
 						}
 					});
-				thread.start();
-			}
-		}
+				thread2.start();}}
 	}
-public void setGrText(){
-	TextPaint paint = textView.getPaint();
+public void setGrText(TextView textView1,String ss){
+	TextPaint paint = textView1.getPaint();
 	StringBuilder ssb=new StringBuilder();
-	ssb.append(s+" "+currentTime);
+	ssb.append(ss);
 	float width = paint.measureText(ssb.toString());
-	Shader textShader = new LinearGradient(0, 0, width, textView.getTextSize(),
+	Shader textShader = new LinearGradient(0, 0, width, textView1.getTextSize(),
 										   new int[]{
 											   Color.parseColor("#F97C3C"),
 											   Color.parseColor("#FDB54E"),
@@ -115,9 +148,20 @@ public void setGrText(){
 											   Color.parseColor("#478AEA"),
 											   Color.parseColor("#8446CC"),
 										   }, null, Shader.TileMode.CLAMP);
-	textView.getPaint().setShader(textShader);
-	textView.setVisibility(View.VISIBLE);
-	textView.setText(ssb.toString());
+	textView1.getPaint().setShader(textShader);
+	textView1.setVisibility(View.VISIBLE);
+	textView1.setText(ssb.toString());
+	}
+	public void setUI(){
+	text_exp.setVisibility(View.VISIBLE);
+	text_exp.setText(getRemainTime(s_time));
+	ttxt_end.setVisibility(View.VISIBLE);
+	ttxt_end.setText(getRemainTime(e_time));
+	
+}
+public void setD_UI(){
+	tc.setVisibility(View.VISIBLE);
+	
 }
 	@Override
 	public boolean onTouchEvent(MotionEvent event)
@@ -143,6 +187,10 @@ public void setGrText(){
 				break;
 		}return super.onTouchEvent(event);
 	}
-
+public String getRemainTime(long stime){
+	StringBuilder sb=new StringBuilder();
+	sb.append(new Date(stime).toLocaleString());
+	return sb.toString();
+}
 
 }

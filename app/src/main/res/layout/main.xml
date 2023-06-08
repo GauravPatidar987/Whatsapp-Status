@@ -10,16 +10,16 @@
 		android:layout_alignParentBottom="true"
 		android:onClick="myStatus"
 	/>
-	
 
-    
+
+
 	<ImageView
-	android:layout_width="match_parent"
-    android:layout_height="match_parent"
-	android:id="@+id/mainImageView"
-	android:layout_above="@id/mainTextView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/mainImageView"
+		android:layout_above="@id/mainTextView"
 	/>
-    
+
 	<ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
@@ -33,17 +33,63 @@
 		android:progressDrawable="@drawable/pb_shape"
         android:minHeight="20dp"
         android:minWidth="200dp"
-        android:progress="35" />
-	<TextView
-		android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text=""
-		android:visibility="invisible"
-		android:padding="4dp"
-		android:background="#000000"
-		android:textStyle="italic"
-		android:id="@+id/main_tv"
-		android:textSize="12sp"
-		android:textColor="#f97c3c"
+        android:progress="0" />
+	<RelativeLayout
+		android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=""
+			android:layout_alignParentLeft="true"
+			android:visibility="invisible"
+			android:padding="4dp"
+			android:background="#000000"
+			android:textStyle="italic"
+			android:id="@+id/main_tv"
+			android:textSize="12sp"
+			android:textColor="#f97c3c"
 		/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=""
+			android:layout_alignParentLeft="true"
+			android:visibility="invisible"
+			android:padding="4dp"
+			android:layout_below="@id/main_tv"
+			android:background="#000000"
+			android:textStyle="italic"
+			android:id="@+id/main_tv_counter"
+			android:textSize="12sp"
+			android:textColor="#f97c3c"
+		/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=""
+			android:layout_alignParentRight="true"
+			android:visibility="invisible"
+			android:padding="4dp"
+			android:background="#000000"
+			android:textStyle="italic"
+			android:id="@+id/main_tv_ex"
+			android:textSize="12sp"
+			android:textColor="#f97c3c"
+		/>
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text=""
+			android:layout_alignParentRight="true"
+			android:visibility="invisible"
+			android:layout_below="@id/main_tv_ex"
+			android:padding="4dp"
+			android:background="#000000"
+			android:textStyle="italic"
+			android:id="@+id/main_tv_exp"
+			android:textSize="12sp"
+			android:textColor="#f6cdca"
+		/>
+	</RelativeLayout>
 </RelativeLayout>
