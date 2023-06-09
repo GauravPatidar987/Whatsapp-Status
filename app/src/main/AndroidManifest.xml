@@ -10,7 +10,8 @@
 		android:resizeableActivity = "true">
         <activity
             android:name=".AddStatusActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+			>
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,6 +20,9 @@
         </activity>
 		<activity
             android:name=".ViewStatusActivity"/>
+		
+		<fragment
+            android:name=".ViewStatusFragment"/>
 		
     </application>
 

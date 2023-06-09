@@ -7,83 +7,33 @@ import java.util.*;
 import android.net.*;
 import android.view.*;
 
-public class ViewStatusActivity extends Activity
+public class ViewStatusActivity extends Activity implements Mcall
 {
 	ProgressBar progress;
 	ImageView im;
 	List<Uri> list;
-	public static int ci=0;
+	public int ci=0;
 	boolean rf=true;
-	private Context c;
-	private boolean wai;
-	private int currentProgress=0;
-	private Thread thread;
-	private Handler mHandler;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_status);
-
-		progress = findViewById(R.id.progressBar);
-		im = findViewById(R.id.mainImageView);
-		c = this;
 		list = AddStatusActivity.list;
-		mHandler = new Handler();
-		thread = new Thread(new Runnable(){
-
-				@Override
-				public void run()
-				{
-					ci=1;
-					Uri u=list.get(ci);
-					im.setImageURI(u);
-					
-					currentProgress = 0;
-					while (currentProgress <= 100)
-					{
-						try
-						{
-							if (!wai)
-							{
-								currentProgress += 20;
-							}
-							Thread.sleep(500);
-
-						}
-						catch (InterruptedException e)
-						{
-
-						}
-						mHandler.post(new Runnable() {
-								@Override
-								public void run()
-								{
-									ProgressBarAnimation anim = new ProgressBarAnimation(progress, progress.getProgress(), currentProgress);
-									anim.setDuration(500);
-									progress.startAnimation(anim);
-
-								}
-							});
-					}
-
-				}});
-		thread.start();
-		
+		changeUi(ci);
+		//getFragmentManager().beginTransaction().replace(R.id.frg_container,new ViewStatusFragment(list.get(ci),this)).commit();
 	}
 	@Override
-	public boolean onTouchEvent(MotionEvent event)
+	public void changeUi(int i)
 	{
-		int c=event.getAction();
-		switch (c)
-		{
-			case MotionEvent.ACTION_DOWN:		
-				wai = true;
-				break;
-			case MotionEvent.ACTION_UP:
-				wai = false;
-				break;
-		}return super.onTouchEvent(event);
+		if(i>=0&&i<list.size())
+			ci=i;
+			getFragmentManager().beginTransaction().replace(R.id.frg_container,new ViewStatusFragment(list.get(i),this)).commit();
+	}
+	@Override
+	public int getUi()
+	{
+		return ci;
 	}
 }

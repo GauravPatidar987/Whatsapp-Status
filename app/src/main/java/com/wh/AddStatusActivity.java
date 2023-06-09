@@ -22,17 +22,17 @@ public class AddStatusActivity extends Activity
 	}
 	public void addStatus(View v)
 	{
-		Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		startActivityForResult(intent, REQ_PICK_IMAGE);
+		Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);	
+		startActivityForResult(i, REQ_PICK_IMAGE);
 	}
 	public void viewStatus(View v)
 	{
+		
 		if (list.size() > 0)
 		{
-ViewStatusActivity.ci=0;
 			Intent i=new Intent(this, ViewStatusActivity.class);
+			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			startActivity(i);
-
 		}
 		else
 		{
@@ -51,6 +51,7 @@ ViewStatusActivity.ci=0;
 				uri = data.getData();
 				list.add(uri);
 				Toast.makeText(this, "status uploaded", Toast.LENGTH_LONG).show();
+				
 			}
 		}
 	}
