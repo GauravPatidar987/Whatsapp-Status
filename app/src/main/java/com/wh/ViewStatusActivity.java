@@ -11,26 +11,28 @@ public class ViewStatusActivity extends Activity implements Mcall
 {
 	ProgressBar progress;
 	ImageView im;
-	List<Uri> list;
+	List<Status> list;
 	public int ci=0;
 	boolean rf=true;
-	
+	SQLiteHelper helper;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_status);
-		list = AddStatusActivity.list;
+		helper = new SQLiteHelper(this);
+		list = helper.getAllStatus();
+
 		changeUi(ci);
 		//getFragmentManager().beginTransaction().replace(R.id.frg_container,new ViewStatusFragment(list.get(ci),this)).commit();
 	}
 	@Override
 	public void changeUi(int i)
 	{
-		if(i>=0&&i<list.size())
-			ci=i;
-			getFragmentManager().beginTransaction().replace(R.id.frg_container,new ViewStatusFragment(list.get(i),this)).commit();
-	}
+		if (i >= 0 && i < list.size())
+		{ci = i;
+			getFragmentManager().beginTransaction().replace(R.id.frg_container, new ViewStatusFragment(list.get(i), this)).commit();
+		}}
 	@Override
 	public int getUi()
 	{

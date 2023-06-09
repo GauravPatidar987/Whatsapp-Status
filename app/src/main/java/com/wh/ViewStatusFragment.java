@@ -5,20 +5,21 @@ import android.os.*;
 import android.widget.*;
 import android.net.*;
 import android.view.View.*;
+import android.content.*;
 
 public class ViewStatusFragment extends Fragment implements OnTouchListener
 {
 	ProgressBar progress;
 	ImageView im;
-	Uri uri;
+	Status ssm;
 	private boolean wai;
 	private Thread thread;
 	private Handler mHandler;
 	private int currentProgress=0;
 	private Mcall cca;
-	public ViewStatusFragment(Uri uri, Mcall cca)
+	public ViewStatusFragment(Status ssm, Mcall cca)
 	{
-		this.uri = uri;
+		this.ssm = ssm;
 		this.cca = cca;
 	}
 	@Override
@@ -54,7 +55,10 @@ public class ViewStatusFragment extends Fragment implements OnTouchListener
 	public void setup()
 	{
 		mHandler = new Handler();
-		Uri u=uri;
+		Uri u=Uri.parse(ssm.getStatus());
+		final int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION;
+		ContentResolver resolver =getActivity().getContentResolver();
+		resolver.takePersistableUriPermission(u, takeFlags);
 		im.setImageURI(u);
 		thread = new Thread(new Runnable(){
 				@Override

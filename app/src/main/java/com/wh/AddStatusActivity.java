@@ -12,6 +12,7 @@ public class AddStatusActivity extends Activity
 
 	private static final int REQ_PICK_IMAGE = 0;
 	private Uri uri;
+	SQLiteHelper helper;
 	public static List<Uri> list=new ArrayList<>();
 	@Override
     protected void onCreate(Bundle savedInstanceState)
@@ -19,6 +20,7 @@ public class AddStatusActivity extends Activity
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_status);
+		helper = new SQLiteHelper(this);
 	}
 	public void addStatus(View v)
 	{
@@ -27,8 +29,8 @@ public class AddStatusActivity extends Activity
 	}
 	public void viewStatus(View v)
 	{
-		
-		if (list.size() > 0)
+
+		if (helper.getStatusCount() > 0)
 		{
 			Intent i=new Intent(this, ViewStatusActivity.class);
 			i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -48,10 +50,15 @@ public class AddStatusActivity extends Activity
 		{
 			if (data != null && data.getData() != null)
 			{
+				Status s=new Status();
+
 				uri = data.getData();
-				list.add(uri);
+				s.setStatus(uri.toString());
+				helper.addStatus(s);
+
+				//list.add(uri);
 				Toast.makeText(this, "status uploaded", Toast.LENGTH_LONG).show();
-				
+
 			}
 		}
 	}
